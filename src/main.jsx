@@ -10,7 +10,7 @@ import Root, {
   action as rootAction,
   loader as rootLoader,
 } from "./routes/root";
-import Tournament from "./routes/tournaments";
+import Tournament from "./routes/tournament";
 
 
 const router = createBrowserRouter([

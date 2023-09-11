@@ -4,7 +4,7 @@ import {
   useLoaderData,
   useFetcher,
  } from "react-router-dom";
-import { getTournament } from "../tournaments";
+import { getTournament } from "../utils/utilsTournaments";
 
 export async function loader({ params }) {
   const tournament = await getTournament(params.tournamentId);
@@ -13,6 +13,7 @@ export async function loader({ params }) {
 
 
 export default function Tournament() {
+  console.log(useLoaderData())
     const { tournament:userTournament } = useLoaderData();
   const tournament = {
     first: "Your",

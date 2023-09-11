@@ -1,31 +1,31 @@
 import {
-    Outlet, 
-    Link,  
-    useLoaderData, 
-    Form, 
+  Form,
+  Link,
+  Outlet,
+  useLoaderData,
 } from "react-router-dom";
-import { getContacts, createContact } from "../contacts";
+import { createTournament, getTournaments } from "../utils/utilsTournaments";
 
 export async function action() {
-    const contact = await createContact();
-    return { contact };
+    const tournament = await createTournament();
+    return { tournament };
   }
 
 export async function loader() {
-    const contacts = await getContacts();
-    return { contacts };
+    const tournaments = await getTournaments();
+    return { tournaments };
   }
 export default function Root() {
-    const { contacts } = useLoaderData();
+    const { tournaments } = useLoaderData();
     return (
       <>
         <div id="sidebar">
-          <h1>React Router Contacts</h1>
+          <h1>React Router Tournaments</h1>
           <div>
             <form id="search-form" role="search">
               <input
                 id="q"
-                aria-label="Search contacts"
+                aria-label="Search tournaments"
                 placeholder="Search"
                 type="search"
                 name="q"
@@ -46,26 +46,26 @@ export default function Root() {
             </Form>
           </div>
           <nav>
-          {contacts.length ? (
+          {tournaments.length ? (
             <ul>
-              {contacts.map((contact) => (
-                <li key={contact.id}>
-                  <Link to={`contacts/${contact.id}`}>
-                    {contact.first || contact.last ? (
+              {tournaments.map((tournament) => (
+                <li key={tournament.id}>
+                  <Link to={`tournaments/${tournament.id}`}>
+                    {tournament.first || tournament.last ? (
                       <>
-                        {contact.first} {contact.last}
+                        {tournament.first} {tournament.last}
                       </>
                     ) : (
                       <i>No Name</i>
                     )}{" "}
-                    {contact.favorite && <span>★</span>}
+                    {tournament.favorite && <span>★</span>}
                   </Link>
                 </li>
               ))}
             </ul>
           ) : (
             <p>
-              <i>No contacts</i>
+              <i>No tournaments</i>
             </p>
           )}
           </nav>
