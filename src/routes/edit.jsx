@@ -2,10 +2,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import { Button, } from "react-bootstrap";
 import {
-    Form,
-    redirect,
-    useLoaderData,
-    useNavigate,
+  Form,
+  redirect,
+  useLoaderData,
+  useNavigate,
 } from "react-router-dom";
 import { updateTournament } from "../tournaments";
 
@@ -131,7 +131,14 @@ export default function EditTournament() {
           </label>
           <p>
             <button type="submit">Save</button>
-            <button type="button">Cancel</button>
+            <button 
+            type="button"
+            onClick={() =>{
+              navigate(-1);
+            }}
+            >
+              Cancel
+              </button>
           </p>
         </Form>
         </div>

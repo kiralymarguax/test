@@ -1,46 +1,75 @@
+import { useEffect } from "react";
 import {
   Form,
   Link,
+  NavLink,
   Outlet,
+  redirect,
   useLoaderData,
+  useNavigation,
+  useSubmit,
 } from "react-router-dom";
-import { createTournament, getTournaments } from "../utils/utilsTournaments";
+import { createTournament, getTournaments } from "../tournaments";
+
 
 export async function action() {
     const tournament = await createTournament();
-    return { tournament };
+    return redirect(`/tournaments/${tournament.id}/edit`);
   }
 
-export async function loader() {
-    const tournaments = await getTournaments();
-    return { tournaments };
+export async function loader({request}) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
+    const tournaments = await getTournaments(q);
+    return { tournaments, q };
   }
+  
 export default function Root() {
-    const { tournaments } = useLoaderData();
+  const { tournaments, q } = useLoaderData();
+  const navigation = useNavigation();
+  const submit = useSubmit();
+
+  const searching = 
+  navigation.location &&
+  new URLSearchParams(navigation.location.search).has(
+    "q"
+  );
+
+  useEffect(() => {
+    document.getElementById("q").value = q;
+  }, [q]);
     return (
       <>
         <div id="sidebar">
-          <h1>React Router Tournaments</h1>
+          <h1>Tournaments</h1>
           <div>
-            <form id="search-form" role="search">
+            <Form id="search-form" role="search">
               <input
                 id="q"
+                className={searching ? "loading" : ""}
                 aria-label="Search tournaments"
                 placeholder="Search"
                 type="search"
                 name="q"
+                defaultValue={q}
+                onChange={(event) =>{
+                  const isFirstSearch = q == null;
+                  submit(event.currentTarget.form, {
+                    replace: !isFirstSearch,
+                  });
+                }}
               />
               
               <div
                 id="search-spinner"
                 aria-hidden
-                hidden={true}
+                hidden={!searching}
               />
               <div
                 className="sr-only"
                 aria-live="polite"
               ></div>
-            </form>
+            </Form>
             <Form method="post">
               <button type="submit">New</button>
             </Form>
@@ -50,27 +79,43 @@ export default function Root() {
             <ul>
               {tournaments.map((tournament) => (
                 <li key={tournament.id}>
-                  <Link to={`tournaments/${tournament.id}`}>
-                    {tournament.first || tournament.last ? (
+                  <NavLink
+                    to={`tournaments/${tournament.id}`}
+                    className={({ isActive, isPending }) =>
+                     `${isActive
+                      ? "active" : ""
+                    } 
+                    ${isPending? 
+                      "pending" : ""}
+                      `}
+                    >
+                      <Link to={`tournaments/${tournament.id}`}>
+                    {tournament.name || tournament.code ? (
                       <>
-                        {tournament.first} {tournament.last}
+                        {tournament.name} {tournament.code}
                       </>
                     ) : (
-                      <i>No Name</i>
+                      <i>No Tournament</i>
                     )}{" "}
                     {tournament.favorite && <span>★</span>}
                   </Link>
+                  </NavLink>
+                  {/* <a href="#" onClick={()=>handleClick(tournament)}> */}
                 </li>
               ))}
             </ul>
           ) : (
             <p>
-              <i>No tournaments</i>
+              <i>No Tournaments</i>
             </p>
           )}
           </nav>
         </div>
-        <div id="detail"></div>
+        <div id="detail"
+        className={
+          navigation.state === "loading" ? "loading" : ""
+        }
+        ></div>
         <Outlet />
       </>
     );

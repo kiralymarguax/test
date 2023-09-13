@@ -1,16 +1,27 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
+import "bootstrap/dist/css/bootstrap.css";
+
+import React from "react";
+import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import ErrorPage from "./error-page";
 import "./index.css";
 import Root, {
   action as rootAction,
   loader as rootLoader,
 } from "./routes/root";
-import Tournament from "./routes/tournament";
+import ErrorPage from "./error-page";
+import Tournament, {
+  loader as tournamentLoader,
+  action as tournamentAction,
+} from "./tournament";
+import EditTournament, {
+  action as editAction,
+} from './routes/edit';
+import { action as destroyAction } from "./routes/destroy";
+import Index from './routes';
+
 
 
 const router = createBrowserRouter([
@@ -21,16 +32,27 @@ const router = createBrowserRouter([
     loader: rootLoader,
     action: rootAction,
     children: [
+      { index: true, element: <Index />},
       {
         path: "tournaments/:tournamentId",
         element: <Tournament />,
+        loader: tournamentLoader,
+        action: tournamentAction,
       },
+      {
+        path: "tournaments/:tournamentId/edit",
+        element: <EditTournament />,
+        action: editAction,
+        loader: tournamentLoader,
+      },
+      {
+        path: "tournaments/:tournamentId/destroy",
+        action: destroyAction,
+        errorElement: <div>Oops! There was an error.</div>,
+      }
     ],
   },
-  {
-    path: "tournaments/:tournamentId",
-    element: <Tournament />,
-  },
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

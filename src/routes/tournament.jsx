@@ -1,68 +1,88 @@
-
+import PropTypes from 'prop-types';
 import { 
   Form, 
   useLoaderData,
   useFetcher,
  } from "react-router-dom";
-import { getTournament } from "../utils/utilsTournaments";
+import { getTournament, updateTournament } from "../tournaments";
 
-export async function loader({ params }) {
-  const tournament = await getTournament(params.tournamentId);
-  return { tournament };
+export async function action({ request, params}) {
+  let formData = await request.formData();
+  return updateTournament(params.tournamentId, {
+    favorite: formData.get("favorite") === "true",
+  });
 }
 
+export async function loader({ params }) {
+ if (params.tournamentId === undefined) {
+  return { 
+    tournament:{
+      name: 'tournament name',
+      code:  'tournament code',
+      Participants: 'tournament participants',
+      Brand: 'Site ID',
+      Active: true,
+      start: Date,
+      end: Date,
+    }, 
+  }
+}
+ const tournament = await getTournament(params.tournamentId);
+ if (!tournament){
+  throw new Response("", {
+    status: 404,
+    statusText: "Not Found"
+    });
+ }
+ return { 
+  tournament
+ };
+}
 
-export default function Tournament() {
-  console.log(useLoaderData())
-    const { tournament:userTournament } = useLoaderData();
-  const tournament = {
-    first: "Your",
-    last: "Name",
-    avatar: "https://placekitten.com/g/200/200",
-    twitter: "your_handle",
-    notes: "Some notes",
-    favorite: true,
-  };
+export default function Tournament(){ {
+  const { tournament } = useLoaderData()
 
   return (
+
     <div id="tournament">
       <div>
         <img
-          key={tournament.avatar}
-          src={tournament.avatar || null}
+          key={tournament.Participants}
+          src={tournament.Participants || null}
         />
       </div>
 
       <div>
         <h1>
-          {tournament.first || tournament.last ? (
+          {tournament.name || tournament.code ? (
             <>
-              {tournament.first} {tournament.last}
+              {tournament.name} {tournament.code}
             </>
           ) : (
-            <i>No Name</i>
+            <i>Tournament Set Up</i>
           )}{" "}
-          <Favorite tournament={tournament} />
+          <Active tournament={tournament} />
         </h1>
 
-        {tournament.twitter && (
+        {tournament.operator && (
           <p>
-            <a
-              target="_blank"
-              href={`https://twitter.com/${tournament.twitter}`} rel="noreferrer"
-            >
-              {tournament.twitter}
-            </a>
+
+              {tournament.operator}
+          
           </p>
         )}
-
-        {tournament.notes && <p>{tournament.notes}</p>}
+       {tournament.start && tournament.end && (
+        <p>
+          {tournament.start} - {tournament.end}
+        </p>
+       )}
 
         <div>
           <Form action="edit">
             <button type="submit">Edit</button>
           </Form>
           <Form
+          className=''  
             method="post"
             action="destroy"
             onSubmit={(event) => {
@@ -75,30 +95,42 @@ export default function Tournament() {
               }
             }}
           >
-            <button type="submit">Delete</button>
+            <button type="submit">Submit</button>
+
           </Form>
         </div>
       </div>
     </div>
   );
+   }
 }
 
-function Favorite({ tournament }) {
-  // yes, this is a `let` for later
-  let favorite = tournament.favorite;
+function Active({ tournament }) {
+  const fetcher = useFetcher();
+  let active = tournament.active;
+  if (fetcher.formData) {
+    active = fetcher.formData.get("active") === "true";
+  }
   return (
-    <Form method="post">
+    <fetcher.Form method="post">
       <button
         name="favorite"
-        value={favorite ? "false" : "true"}
+        value={active ? "false" : "true"}
         aria-label={
-          favorite
-            ? "Remove from favorites"
-            : "Add to favorites"
+          active
+            ? "Remove from actives"
+            : "Add to actives"
         }
+
       >
-        {favorite ? "★" : "☆"}
+
+        {active ? "★" : "☆"}
       </button>
-    </Form>
+    </fetcher.Form>
   );
+
+}
+Active.propTypes = {
+
+  tournament: PropTypes.object,
 }
