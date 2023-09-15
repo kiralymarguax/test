@@ -1,26 +1,28 @@
 import "bootstrap/dist/css/bootstrap.css";
 
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { ReactDOM } from "react-dom/client";
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import "./index.css";
-import Root, {
+import {
+  Root,
   action as rootAction,
   loader as rootLoader,
-} from "./routes/root";
+} from "../src/routes/root";
 import ErrorPage from "./error-page";
-import Tournament, {
-  loader as tournamentLoader,
-  action as tournamentAction,
-} from "./tournament";
+import "./index.css";
+import { action as destroyAction } from "./routes/destroy";
 import EditTournament, {
   action as editAction,
-} from './routes/edit';
-import { action as destroyAction } from "./routes/destroy";
-import Index from './routes';
+} from "./routes/edit";
+import Index from "./routes/index";
+import Tournament, {
+  action as tournamentAction,
+  loader as tournamentLoader,
+} from "./routes/tournament";
+
 
 
 

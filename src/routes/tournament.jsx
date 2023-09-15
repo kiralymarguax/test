@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { 
-  Form, 
-  useLoaderData,
+import {
+  Form,
   useFetcher,
- } from "react-router-dom";
-import { getTournament, updateTournament } from "../tournaments";
+  useLoaderData,
+} from "react-router-dom";
+import { getTournament, updateTournament } from "../utils/utilsTournaments";
 
 export async function action({ request, params}) {
   let formData = await request.formData();

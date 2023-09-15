@@ -19,7 +19,10 @@ const tournamentReducer = (state = initialState, action) => {
     switch(action.type) {
         case ADD_TOURNAMENT :
             const newTournament= {...action.payload, id}
-            return{...state, tournament:{newTournament.id, newTournament}}
+            const newState={...state, tournament:{id: newTournament}}
+            id+=1
+            return newState
+
         case DELETE_TOURNAMENT : return state
         default: return state
     }

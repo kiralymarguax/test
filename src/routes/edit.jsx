@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from "react";
 import { Button, } from "react-bootstrap";
 import {
-  Form,
+  // Form,
   redirect,
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { updateTournament } from "../tournaments";
+import { updateTournament } from "../utils/utilsTournaments";
 
 export async function action({request, params}) {
     const formData = await request.formData();
@@ -31,116 +32,182 @@ export default function EditTournament() {
 
     return (
         <div>
+           <Formik
+      initialValues={{
+        promoType:[
+          {
+            bonusSpin:"",
+            tournament:"",
+          },
+        ],
+        name: '',
+        code: '',
+        startTime: '',
+        endTime:'',
+        autoOptIn:"",
+        toggle: false,
+        checked: [],
+        operator:"",
+        participant:"",
+        game:"",
+        Prize: [
+          {
+            rankingType:"",
+            rankingPosition:"",
+            isMonetary:"",
+            prizeAmount:"",
+          },
+        ],
+      }}
+      onSubmit={async (values) => {
+        await new Promise((r) => setTimeout(r, 500));
+        alert(JSON.stringify(values, null, 2));
+      }}
+    
+    >
+       <Form method="post" id="tournament-form">
+        <Field>
+          <option>Bonus Spin</option>
+          <option>Tournament</option>
+        </Field>
 
-        <Form method="post" id="tournament-form">
+<h4>Tournament Set Up Form</h4>
 
-            <h4>Tournament Set Up Form</h4>
-          <p>
-            <span>Tournament</span>
-            <input className="input-space"
-              placeholder="Tournament Name"
-              aria-label="Tournament name"
-              type="text"
-              name="name"
-              value={tournamentName}
-              onChange={(e)=>setTournamentName(e.target.value)}
-              defaultValue={tournament.name}
-            />
-            {error.tournamentName&&<span>{error.tournamentName}</span>}
-            <input
-              placeholder="Tournament Code"
-              aria-label="Tournament Code"
-              type="text"
-              name="Code"
-              defaultValue={tournament.code}
-            />
-          </p>
+<Field type="text" name="promoType" placeholder="Promo Type" />
+           <Field as="select" name="PromoType">
+             <option value="red">Bonus Spin</option>
+             <option value="green">Tournament</option>
+           </Field>
 
-          <label>
-            <span>Date</span>
-            <input className="input-space"
-                  placeholder="Start Date/Time"
-                  aria-label="Start Date/Time"
-                  type="datetime-local"
-                  name="startTime"
-                  defaultValue={tournament.date}
-            />
-                <input
-                  placeholder="End Date/Time"
-                  aria-label="End Date/Time"
-                  type="datetime-local"
-                  name="date"
-                  defaultValue={tournament.date}
-                />
-                
-          </label>
-          <span>Spin Date/Time</span>
-          <input className="input-space"
-          placeholder="Start Date/Time"
-          aria-label="End Date/Time"
-          type="datetime-local"
-          name="Spin.date"
-          defaultValue={tournament.date}
-          />
-          <input
-          placeholder="End Date/Time"
-          aria-label="End Date/Time"
-          type="datetime-local"
-          name="Spin.date"
-          />
-          <label>
-            <span>Operator</span>
-            <input
-            className="input-space"
-            placeholder="Site ID"
-            aria-label="Operator Name"
-            type="text"
-            name="operator" 
-            defaultValue={tournament.operator} 
-            />
-            
-          </label>
-          <span>Auto Opt In</span>
+           <label htmlFor="name">Tournament Name</label>
+          <Field id="name" name="name" placeholder="Tournament Name" />
 
-        
-            <span>Games</span>
-            <input
-            className="input-space"
-            placeholder="qualifying Games"
-            aria-label="Games"
-            type="text"
-            name="Game"
-            defaultValue={tournament.name}
-        />
-        <p>
-            <span>Participants</span>
-            <input
-            className="input-space"
-            placeholder="Number of Participants"
-            aria-label="Number of Participants"/>
-            <input
-            className="input-space"
-            placeholder="Number of Participants"
-            aria-label="Number of Participants"
+          <label htmlFor="code">Tournament Code</label>
+          <Field id="code" name="coe" placeholder="Tournament Code" />
+
+          <label htmlFor="name">Participants</label>
+          <Field
+            id="participants"
             name="participants"
-            defaultValue={tournament.name}
-            />
-            
-        </p>
-        <label>
-          </label>
-          <p>
-            <button type="submit">Save</button>
-            <button 
-            type="button"
-            onClick={() =>{
-              navigate(-1);
-            }}
-            >
-              Cancel
-              </button>
-          </p>
-        </Form>
+            placeholder="Participants"
+            type="txt"
+          />
+          <Field className="input-space"
+placeholder="Start Date/Time"
+aria-label="End Date/Time"
+type="datetime-local"
+name="Spin.date"
+defaultValue={tournament.date}
+/>
+{/* <p>
+<span>Tournament</span>
+<input className="input-space"
+  placeholder="Tournament Name"
+  aria-label="Tournament name"
+  type="text"
+  name="name"
+  value={tournamentName}
+  onChange={(e)=>setTournamentName(e.target.value)}
+  defaultValue={tournament.name}
+/>
+{error.tournamentName&&<span>{error.tournamentName}</span>}
+<input
+  placeholder="Tournament Code"
+  aria-label="Tournament Code"
+  type="text"
+  name="Code"
+  defaultValue={tournament.code}
+/>
+</p>
+
+<label>
+<span>Date</span>
+<input className="input-space"
+      placeholder="Start Date/Time"
+      aria-label="Start Date/Time"
+      type="datetime-local"
+      name="startTime"
+      defaultValue={tournament.date}
+/>
+    <input
+      placeholder="End Date/Time"
+      aria-label="End Date/Time"
+      type="datetime-local"
+      name="date"
+      defaultValue={tournament.date}
+    />
+    
+</label>
+<span>Spin Date/Time</span>
+<input className="input-space"
+placeholder="Start Date/Time"
+aria-label="End Date/Time"
+type="datetime-local"
+name="Spin.date"
+defaultValue={tournament.date}
+/>
+<input
+placeholder="End Date/Time"
+aria-label="End Date/Time"
+type="datetime-local"
+name="Spin.date"
+/>
+<label>
+<span>Operator</span>
+<input
+className="input-space"
+placeholder="Site ID"
+aria-label="Operator Name"
+type="text"
+name="operator" 
+defaultValue={tournament.operator} 
+/>
+
+</label>
+<span>Auto Opt In</span>
+
+
+<span>Games</span>
+<input
+className="input-space"
+placeholder="qualifying Games"
+aria-label="Games"
+type="text"
+name="Game"
+defaultValue={tournament.name}
+/>
+<p>
+<span>Participants</span>
+<input
+className="input-space"
+placeholder="Number of Participants"
+aria-label="Number of Participants"/>
+<input
+className="input-space"
+placeholder="Number of Participants"
+aria-label="Number of Participants"
+name="participants"
+defaultValue={tournament.name}
+/>
+
+</p>
+<label>
+</label>
+<p>
+<button type="submit">Save</button>
+<button 
+type="button"
+onClick={() =>{
+  navigate(-1);
+}}
+>
+  Cancel
+  </button>
+</p> */}
+</Form>
+    </Formik>
+
+       
         </div>
       );
     }

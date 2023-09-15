@@ -9,7 +9,7 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router-dom";
-import { createTournament, getTournaments } from "../tournaments";
+import { createTournament, getTournaments } from "../utils/utilsTournaments";
 
 
 export async function action() {
