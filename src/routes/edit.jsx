@@ -73,7 +73,6 @@ export default function EditTournament() {
 
 <h4>Tournament Set Up Form</h4>
 
-<Field type="text" name="promoType" placeholder="Promo Type" />
            <Field as="select" name="PromoType">
              <option value="red">Bonus Spin</option>
              <option value="green">Tournament</option>
@@ -84,21 +83,47 @@ export default function EditTournament() {
 
           <label htmlFor="code">Tournament Code</label>
           <Field id="code" name="coe" placeholder="Tournament Code" />
+          <label htmlFor="name">Tournament Start Date</label>
+          <Field placeholder="Start Date/Time" aria-label="End Date/Time" type="datetime-local"name="Spin.date"/>
+
+          <label htmlFor="name">Tournament End Date</label>
+          <input placeholder="End Date/Time" aria-label="End Date/Time" type="datetime-local" name="Spin.date"/>
+
+          <label htmlFor="name">Spin Start/End Date</label>
+          <Field placeholder="Start Date/Time" aria-label="End Date/Time" type="datetime-local"name="Spin.date"/>
+
+          <label htmlFor="name">Spin End Date</label>
+          <input placeholder="End Date/Time" aria-label="End Date/Time" type="datetime-local" name="Spin.date"/>
 
           <label htmlFor="name">Participants</label>
-          <Field
-            id="participants"
-            name="participants"
-            placeholder="Participants"
-            type="txt"
-          />
-          <Field className="input-space"
-placeholder="Start Date/Time"
-aria-label="End Date/Time"
-type="datetime-local"
-name="Spin.date"
-defaultValue={tournament.date}
-/>
+          <Field id="participants" name="participants" placeholder="Participants" type="txt"/>
+
+          <label htmlFor="name">Auto Opt In</label>
+          <label>Yes <Field type="radio" name="picked" value="Yes" /></label>
+            <label> No<Field type="radio" name="picked" value="No" /></label>
+
+            <label>
+            <Field type="checkbox" name="toggle" />
+            {`${values.toggle}`}
+          </label>
+
+          <div id="checkbox-group">Prize Pool</div>
+          <div role="group" aria-labelledby="checkbox-group">
+            <label>
+              <Field type="checkbox" name="checked" value="Ranking Type" />
+              Ranking Type
+            </label>
+            <label>
+              <Field type="checkbox" name="checked" value="Ranking Position" />
+              Ranking Position
+            </label>
+            <label>
+              <Field type="checkbox" name="checked" value="Is Monetary" />
+              Is Monetary
+            </label>
+          </div>
+
+          <button type="submit">Submit</button>
 {/* <p>
 <span>Tournament</span>
 <input className="input-space"
