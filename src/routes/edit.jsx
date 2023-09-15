@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Field, Form, Formik } from 'formik';
+import { object, string, number, date, InferType } from 'yup';
 import { useEffect, useState } from "react";
 import { Button, } from "react-bootstrap";
 import {
@@ -16,6 +17,15 @@ export async function action({request, params}) {
     await updateTournament(params.tournamentId, updates);
     return redirect(`/tournaments/${params.tournamentId}`);
 }
+
+
+let tournamentSchema = object({
+  name: string().required("Tournament name is required").min(2, "name should not be less than 2").max(25, "name should not be more than 25"),
+  code: number().required().positive().integer(),
+  email: string().email(),
+  startTime: date().default(() => new Date()),
+  endTime: date().default(() => new Date()),
+});
 
 export default function EditTournament() {
     const { tournament } =useLoaderData();
@@ -46,7 +56,7 @@ export default function EditTournament() {
         endTime:'',
         autoOptIn:"",
         toggle: false,
-        checked: [],
+        checked: false,
         operator:"",
         participant:"",
         game:"",
@@ -59,6 +69,7 @@ export default function EditTournament() {
           },
         ],
       }}
+      validationSchema={tournamentSchema }
       onSubmit={async (values) => {
         await new Promise((r) => setTimeout(r, 500));
         alert(JSON.stringify(values, null, 2));

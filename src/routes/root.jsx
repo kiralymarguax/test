@@ -24,7 +24,7 @@ export async function loader({request}) {
     return { tournaments, q };
   }
   
-export default function Root() {
+export function Root() {
   const { tournaments, q } = useLoaderData();
   const navigation = useNavigation();
   const submit = useSubmit();

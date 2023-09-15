@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 
 import React from "react";
-import { ReactDOM } from "react-dom/client";
+import * as ReactDOM from 'react-dom';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -57,8 +57,9 @@ const router = createBrowserRouter([
   
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
