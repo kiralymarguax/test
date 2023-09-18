@@ -1,12 +1,13 @@
+import { NavLink } from "react-router-dom";
 export default function Index() {
     return (
       <p id="zero-state">
-        This is a demo for React Router.
-        <br />
+        Tournament ui
+        {/* <br />
         Check out{" "}
-        <a href="https://reactrouter.com">
+        <NavLink to="">
           the docs at reactrouter.com
-        </a>
+        </NavLink> */}
         .
       </p>
     );

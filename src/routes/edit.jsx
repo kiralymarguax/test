@@ -1,6 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Field, Form, Formik } from 'formik';
-import { object, string, number, date, InferType } from 'yup';
 import { useEffect, useState } from "react";
 import { Button, } from "react-bootstrap";
 import {
@@ -9,6 +8,7 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
+import { date, number, object, string } from 'yup';
 import { updateTournament } from "../utils/utilsTournaments";
 
 export async function action({request, params}) {
@@ -71,8 +71,7 @@ export default function EditTournament() {
       }}
       validationSchema={tournamentSchema }
       onSubmit={async (values) => {
-        await new Promise((r) => setTimeout(r, 500));
-        alert(JSON.stringify(values, null, 2));
+        console.log (values)
       }}
     
     >
@@ -113,7 +112,7 @@ export default function EditTournament() {
           <label>Yes <Field type="radio" name="picked" value="Yes" /></label>
             <label> No<Field type="radio" name="picked" value="No" /></label>
 
-            <label>
+            {/* <label>
             <Field type="checkbox" name="toggle" />
             {`${values.toggle}`}
           </label>
@@ -132,7 +131,7 @@ export default function EditTournament() {
               <Field type="checkbox" name="checked" value="Is Monetary" />
               Is Monetary
             </label>
-          </div>
+          </div> */}
 
           <button type="submit">Submit</button>
 {/* <p>

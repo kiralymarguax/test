@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
-
+import { Provider } from 'react-redux';
 import React from "react";
-import * as ReactDOM from 'react-dom';
+import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -22,9 +22,9 @@ import Tournament, {
   action as tournamentAction,
   loader as tournamentLoader,
 } from "./routes/tournament";
+import configureStore from "./store";
 
-
-
+const store = configureStore()
 
 const router = createBrowserRouter([
   {
@@ -57,9 +57,13 @@ const router = createBrowserRouter([
   
 ]);
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(
+  document.getElementById("root") 
+);
+root.render(
+  <Provider store={store}>
   <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-  document.getElementById("root")
+  <RouterProvider router={router} />
+  </React.StrictMode>
+  </Provider>
 );

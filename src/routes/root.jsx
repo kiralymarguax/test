@@ -89,7 +89,7 @@ export function Root() {
                       "pending" : ""}
                       `}
                     >
-                      <Link to={`tournaments/${tournament.id}`}>
+                      {/* <Link to={`tournaments/${tournament.id}`}> */}
                     {tournament.name || tournament.code ? (
                       <>
                         {tournament.name} {tournament.code}
@@ -98,7 +98,7 @@ export function Root() {
                       <i>No Tournament</i>
                     )}{" "}
                     {tournament.favorite && <span>★</span>}
-                  </Link>
+                  {/* </Link> */}
                   </NavLink>
                   {/* <a href="#" onClick={()=>handleClick(tournament)}> */}
                 </li>
